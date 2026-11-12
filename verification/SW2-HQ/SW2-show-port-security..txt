@@ -1,0 +1,18 @@
+SW2-HQ#show port-security
+Secure Port MaxSecureAddr CurrentAddr SecurityViolation Security Action
+               (Count)       (Count)        (Count)
+--------------------------------------------------------------------
+        Fa0/6        2          1                 0         Restrict
+        Fa0/7        2          0                 0         Restrict
+        Fa0/8        2          0                 0         Restrict
+        Fa0/9        2          0                 0         Restrict
+       Fa0/10        2          0                 0         Restrict
+       Fa0/11        2          1                 0         Restrict
+       Fa0/12        2          0                 0         Restrict
+       Fa0/13        2          0                 0         Restrict
+       Fa0/14        2          0                 0         Restrict
+       Fa0/15        2          0                 0         Restrict
+       Fa0/21        2          1                 0         Restrict
+       Fa0/22        2          0                 0         Restrict
+----------------------------------------------------------------------
+SW2-HQ#

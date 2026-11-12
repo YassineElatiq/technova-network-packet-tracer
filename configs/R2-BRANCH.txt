@@ -1,0 +1,128 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R2-BRANCH
+!
+!
+!
+enable secret 5 $1$mERr$aLhm1tLaQT3RuIR5P1SN60
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username admin secret 5 $1$mERr$kku/hiJPh.4Yp8Xor/4kz1
+!
+!
+license udi pid CISCO2911/K9 sn FTX15242V8N-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+no ip domain-lookup
+ip domain-name technova.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.10
+ description BR-ADMIN
+ encapsulation dot1Q 10
+ ip address 192.168.10.161 255.255.255.240
+ ip helper-address 192.168.10.185
+!
+interface GigabitEthernet0/0.20
+ description BR-SALES
+ encapsulation dot1Q 20
+ ip address 192.168.10.129 255.255.255.224
+ ip helper-address 192.168.10.185
+ ip access-group SALES-BR-IN in
+!
+interface GigabitEthernet0/0.99
+ description BR-MGMT
+ encapsulation dot1Q 99
+ ip address 192.168.10.193 255.255.255.248
+!
+interface GigabitEthernet0/1
+ description WAN-TO-R1-HQ
+ ip address 192.168.10.186 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 2.2.2.2
+ log-adjacency-changes
+ passive-interface default
+ no passive-interface GigabitEthernet0/1
+ network 192.168.10.0 0.0.0.255 area 0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list standard SSH-FROM-IT
+ permit 192.168.10.96 0.0.0.15
+ip access-list extended SALES-BR-IN
+ deny ip 192.168.10.128 0.0.0.31 192.168.10.96 0.0.0.15
+ permit ip any any
+!
+banner motd # Authorized access Only! #
+!
+!
+!
+!
+line con 0
+ exec-timeout 5 0
+ password 7 0802455D0A1625464058
+ logging synchronous
+ login
+!
+line aux 0
+!
+line vty 0 4
+ access-class SSH-FROM-IT in
+ login local
+ transport input ssh
+!
+!
+!
+end
+

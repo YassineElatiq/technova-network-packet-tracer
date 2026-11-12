@@ -1,0 +1,8 @@
+R2-BRANCH#show access-lists
+Standard IP access list SSH-FROM-IT
+    10 permit 192.168.10.96 0.0.0.15
+Extended IP access list SALES-BR-IN
+    10 deny ip 192.168.10.128 0.0.0.31 192.168.10.96 0.0.0.15
+    20 permit ip any any (3 match(es))
+
+R2-BRANCH#

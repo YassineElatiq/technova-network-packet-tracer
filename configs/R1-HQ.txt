@@ -1,0 +1,179 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R1-HQ
+!
+!
+!
+enable secret 5 $1$mERr$aLhm1tLaQT3RuIR5P1SN60
+!
+!
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.10.65 192.168.10.70
+ip dhcp excluded-address 192.168.10.97 192.168.10.100
+ip dhcp excluded-address 192.168.10.129 192.168.10.135
+ip dhcp excluded-address 192.168.10.161 192.168.10.165
+!
+ip dhcp pool HQ-ADMIN
+ network 192.168.10.64 255.255.255.224
+ default-router 192.168.10.65
+ dns-server 192.168.10.114
+ip dhcp pool HQ-SALES
+ network 192.168.10.0 255.255.255.192
+ default-router 102.168.10.1
+ dns-server 192.168.10.114
+ip dhcp pool HQ-IT
+ network 192.168.10.96 255.255.255.240
+ default-router 192.168.10.97
+ dns-server 192.168.10.114
+ip dhcp pool BR-ADMIN
+ network 192.168.10.160 255.255.255.240
+ default-router 192.168.10.161
+ dns-server 192.168.10.114
+ip dhcp pool BR-SALES
+ network 192.168.10.128 255.255.255.224
+ default-router 192.168.10.129
+ dns-server 192.168.10.114
+!
+!
+!
+ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+username admin secret 5 $1$mERr$kku/hiJPh.4Yp8Xor/4kz1
+!
+!
+license udi pid CISCO2911/K9 sn FTX1524O895-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+no ip domain-lookup
+ip domain-name technova.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.10
+ description HQ-ADMIN
+ encapsulation dot1Q 10
+ ip address 192.168.10.65 255.255.255.224
+ ip nat inside
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:10::1/64
+!
+interface GigabitEthernet0/0.20
+ description HQ-SALES
+ encapsulation dot1Q 20
+ ip address 192.168.10.1 255.255.255.192
+ ip nat inside
+ ip access-group SALES-HQ-IN in
+!
+interface GigabitEthernet0/0.30
+ description HQ-IT
+ encapsulation dot1Q 30
+ ip address 192.168.10.97 255.255.255.240
+ ip nat inside
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:30::1/64
+!
+interface GigabitEthernet0/0.50
+ description SERVERS
+ encapsulation dot1Q 50
+ ip address 192.168.10.113 255.255.255.248
+ ip nat inside
+!
+interface GigabitEthernet0/0.99
+ description MGMT
+ encapsulation dot1Q 99
+ ip address 192.168.10.177 255.255.255.248
+ ip nat inside
+!
+interface GigabitEthernet0/1
+ description WAN-TO-R2-BRANCH
+ ip address 192.168.10.185 255.255.255.252
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ description WAN-TO-ISP
+ ip address 203.0.113.2 255.255.255.252
+ ip nat outside
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 1.1.1.1
+ log-adjacency-changes
+ passive-interface default
+ no passive-interface GigabitEthernet0/1
+ network 192.168.10.0 0.0.0.255 area 0
+ default-information originate
+!
+ip nat inside source list NAT-INSIDE interface GigabitEthernet0/2 overload
+ip classless
+ip route 0.0.0.0 0.0.0.0 203.0.113.1 
+!
+ip flow-export version 9
+!
+!
+ip access-list standard NAT-INSIDE
+ permit 192.168.10.0 0.0.0.255
+ip access-list standard SSH-FROM-IT
+ permit 192.168.10.96 0.0.0.15
+ip access-list extended SALES-HQ-IN
+ deny ip 192.168.10.0 0.0.0.63 192.168.10.96 0.0.0.15
+ permit ip any any
+!
+banner motd # Authorized access only! #
+!
+!
+!
+!
+line con 0
+ exec-timeout 5 0
+ password 7 0802455D0A1625464058
+ logging synchronous
+ login
+!
+line aux 0
+!
+line vty 0 4
+ access-class SSH-FROM-IT in
+ login local
+ transport input ssh
+!
+!
+!
+end
+

@@ -1,0 +1,16 @@
+SW3-BR#show port-security
+Secure Port MaxSecureAddr CurrentAddr SecurityViolation Security Action
+               (Count)       (Count)        (Count)
+--------------------------------------------------------------------
+        Fa0/1        2          1                 0         Restrict
+        Fa0/2        2          0                 0         Restrict
+        Fa0/3        2          0                 0         Restrict
+        Fa0/4        2          0                 0         Restrict
+        Fa0/5        2          0                 0         Restrict
+        Fa0/6        2          1                 0         Restrict
+        Fa0/7        2          0                 0         Restrict
+        Fa0/8        2          0                 0         Restrict
+        Fa0/9        2          0                 0         Restrict
+       Fa0/10        2          0                 0         Restrict
+----------------------------------------------------------------------
+SW3-BR#

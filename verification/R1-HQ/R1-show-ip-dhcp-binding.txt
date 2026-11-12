@@ -1,0 +1,10 @@
+R1-HQ#show ip dhcp binding
+IP address       Client-ID/              Lease expiration        Type
+                 Hardware address
+192.168.10.71    00E0.B05A.EB04           --                     Automatic
+192.168.10.11    00D0.FFD0.40AD           --                     Automatic
+192.168.10.12    0001.C7A4.A5A1           --                     Automatic
+192.168.10.101   0090.2BE6.46CC           --                     Automatic
+192.168.10.166   00E0.8FB7.957B           --                     Automatic
+192.168.10.136   00D0.586B.D4ED           --                     Automatic
+R1-HQ#

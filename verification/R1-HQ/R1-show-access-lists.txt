@@ -1,0 +1,10 @@
+R1-HQ#show access-lists
+Standard IP access list NAT-INSIDE
+    10 permit 192.168.10.0 0.0.0.255 (16 match(es))
+Standard IP access list SSH-FROM-IT
+    10 permit 192.168.10.96 0.0.0.15
+Extended IP access list SALES-HQ-IN
+    10 deny ip 192.168.10.0 0.0.0.63 192.168.10.96 0.0.0.15 (4 match(es))
+    20 permit ip any any (11 match(es))
+
+R1-HQ#
